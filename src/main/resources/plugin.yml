@@ -1,0 +1,13 @@
+name: Warp
+author: Cuuky
+version: 1.1
+main: me.cuuky.Main
+commands:
+    setwarp:
+        permission: Warp.setwarp
+    warp:
+        permission: Warp.warp
+    delwarp:
+        permission: Warp.delwarp
+    warplist:
+        permission: Warp.warplist

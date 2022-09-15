@@ -1,0 +1,11 @@
+/gradle/
+/build/
+/bin/
+/.settings/
+/.idea/
+/.gradle/
+/.classpath
+/.project
+/gradlew
+/gradlew.bat
+/WarpOriginal.iml
