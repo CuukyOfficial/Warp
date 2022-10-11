@@ -1,6 +1,6 @@
 name: Warp
 author: Cuuky
-version: 1.2
+version: 1.2.1
 main: me.cuuky.Main
 commands:
     setwarp:
