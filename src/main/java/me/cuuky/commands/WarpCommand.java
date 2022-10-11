@@ -27,8 +27,8 @@ public class WarpCommand implements CommandExecutor {
                         this.main.getConfiguration().getDouble(args[0] + ".x"),
                         this.main.getConfiguration().getDouble(args[0] + ".y"),
                         this.main.getConfiguration().getDouble(args[0] + ".z"));
-                loc.setPitch((float) this.main.getConfiguration().getDouble(args[0] + ".yaw"));
-                loc.setYaw((float) this.main.getConfiguration().getDouble(args[0] + ".pitch"));
+                loc.setPitch((float) this.main.getConfiguration().getDouble(args[0] + ".pitch"));
+                loc.setYaw((float) this.main.getConfiguration().getDouble(args[0] + ".yaw"));
 
                 p.teleport(loc);
                 p.sendMessage(Main.getPrefix() + "§7You have been teleportet to the warp §e" + args[0] + "§7!");
