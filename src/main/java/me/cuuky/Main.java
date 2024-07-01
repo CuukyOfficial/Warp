@@ -26,7 +26,7 @@ public class Main extends JavaPlugin {
 		this.configuration = YamlConfiguration.loadConfiguration(this.file);
 
 		this.registerBukkit();
-		System.out.println("Warp has been activated!");
+		getLogger().info("Warp has been activated!");
 	}
 
 	private void registerBukkit() {
@@ -47,7 +47,7 @@ public class Main extends JavaPlugin {
 			throw new RuntimeException(e);
 		}
 
-		System.out.println("Warp has been deactivated!");
+		getLogger().info("Warp has been deactivated!");
 	}
 
 	public YamlConfiguration getConfiguration() {
