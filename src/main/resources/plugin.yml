@@ -1,13 +1,18 @@
 name: Warp
 author: Cuuky
-version: 1.2.1
-main: me.cuuky.Main
+version: 2.0
+main: de.cuuky.warp.WarpPlugin
+description: Warp plugin for warping players
 commands:
     setwarp:
+        description: Sets a specific warp
         permission: Warp.setwarp
     warp:
+        description: Warps a player
         permission: Warp.warp
     delwarp:
+        description: Deletes a warp
         permission: Warp.delwarp
     warplist:
+        description: List all warps
         permission: Warp.warplist
