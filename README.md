@@ -1,4 +1,2 @@
 # Warp
-A simple warp plugin
-
-## This is a very old plugin of mine, the code may be shit
+A simple warp plugin. See https://www.spigotmc.org/resources/warp.34161/ for more information.
