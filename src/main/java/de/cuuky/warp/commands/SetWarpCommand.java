@@ -7,8 +7,6 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import java.util.Collections;
-
 public class SetWarpCommand implements CommandExecutor {
 
     private final WarpPlugin warpPlugin;
@@ -35,13 +33,13 @@ public class SetWarpCommand implements CommandExecutor {
         }
 
         Player player = (Player) sender;
-        Warp warp = new Warp(args[0], player.getLocation(), Collections.emptyList());
+        Warp warp = new Warp(args[0], player.getLocation());
         if (!this.warpPlugin.addWarp(warp)) {
-            player.sendMessage("§7Warp §e" + args[0] + " §7could not be set!");
+            player.sendMessage("§7Warp §e" + warp.getName() + " §7could not be set!");
             return false;
         }
 
-        player.sendMessage("§7Warp §e" + args[0] + " §7has been set!");
+        player.sendMessage("§7Warp §e" + warp.getName() + " §7has been set!");
         return true;
     }
 }

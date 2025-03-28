@@ -10,6 +10,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.SignChangeEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.metadata.FixedMetadataValue;
+import org.bukkit.metadata.MetadataValue;
 
 import java.util.Objects;
 
@@ -34,8 +36,14 @@ public class WarpSignListener implements Listener {
             return;
 
         Sign sign = (Sign) block.getState();
-        this.warpPlugin.getWarps().filter(w -> w.getSigns().anyMatch(sign::equals))
-                .findFirst().ifPresent(warp -> player.performCommand("warp " + warp.getName()));
+        MetadataValue metadata = sign.getMetadata("warp").stream().findFirst().orElse(null);
+        if (metadata == null)
+            return;
+
+        Warp warp = this.warpPlugin.getWarp(metadata.asString());
+        if (warp != null) {
+            player.performCommand("warp " + warp.getName());
+        }
     }
 
     @EventHandler
@@ -51,7 +59,7 @@ public class WarpSignListener implements Listener {
         Warp warp = this.warpPlugin.getWarp(name);
 
         if (warp != null) {
-            warp.addSign(event.getBlock());
+            event.getBlock().setMetadata("warp", new FixedMetadataValue(this.warpPlugin, name));
             event.setLine(0, "§7[§eWarp§7]");
             event.getPlayer().sendMessage("§7Sign for §e" + name + " §7has been set!");
         }
