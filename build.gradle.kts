@@ -23,8 +23,12 @@ tasks.javadoc { options.encoding = "UTF-8" }
 
 repositories {
     mavenCentral()
+    maven("https://s01.oss.sonatype.org/content/repositories/snapshots/")
+    maven("https://oss.sonatype.org/content/repositories/snapshots/")
     maven("https://repo.varoplugin.de/repository/maven-public/")
     maven("https://hub.spigotmc.org/nexus/content/repositories/snapshots/")
+    maven("https://maven.enginehub.org/repo/")
+    maven("https://repo.extendedclip.com/content/repositories/placeholderapi/")
 }
 
 val internal: Configuration by configurations.creating {
@@ -66,33 +70,14 @@ dependencies {
 	runtimeDownload("com.github.cryptomorin:XSeries:11.3.0")
 }
 
-val createDependenciesFile = tasks.register("createDependenciesFile") {
-    mustRunAfter(tasks.getByName("compileJava"))
-    doLast {
-        val dependenciesFile = file("${layout.buildDirectory}/dependencies.txt")
-        val writer = dependenciesFile.bufferedWriter(charset = StandardCharsets.UTF_8)
-        runtimeDownload.resolvedConfiguration.firstLevelModuleDependencies.forEach {resolvedDependency ->
-            resolvedDependency.allModuleArtifacts.forEach {
-                writer.write("${resolvedDependency.moduleName}:${it.moduleVersion}:${it.file.sha512().base64()}")
-                writer.newLine()
-            }
-        }
-        writer.close()
-    }
-}
-
 tasks.jar {
     if (project.hasProperty("destinationDir"))
         destinationDirectory.set(file(project.property("destinationDir").toString()))
     if (project.hasProperty("fileName"))
         archiveFileName.set(project.property("fileName").toString())
 
-    dependsOn(createDependenciesFile)
-
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
     from(internal.map { if (it.isDirectory) it else zipTree(it) })
-
-    from(file("${layout.buildDirectory}/dependencies.txt"))
 }
 
 tasks.processResources {
