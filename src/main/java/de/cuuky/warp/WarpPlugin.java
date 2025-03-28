@@ -6,6 +6,8 @@ import de.cuuky.warp.commands.WarpCommand;
 import de.cuuky.warp.commands.WarpListCommand;
 import de.cuuky.warp.listener.WarpSignListener;
 import de.varoplugin.cfw.configuration.BetterYamlConfiguration;
+import de.varoplugin.cfw.configuration.serialization.SerializableLocation;
+import org.bukkit.configuration.serialization.ConfigurationSerialization;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitTask;
 
@@ -32,15 +34,21 @@ public class WarpPlugin extends JavaPlugin {
     }
 
     private void loadWarps() {
+        this.warps = new ArrayList<>();
         this.configuration = new BetterYamlConfiguration("plugins/Warp/warps.yml");
         for (String key : this.configuration.getKeys(true)) {
-            if (this.configuration.isConfigurationSection(key)) {
-                this.warps.add((Warp) this.configuration.get(key));
+            Object o = this.configuration.get(key);
+            if (o instanceof Warp) {
+                this.warps.add((Warp) o);
+            } else {
+                this.getLogger().warning("Invalid warp: " + key);
             }
         }
     }
 
     private void registerBukkit() {
+        ConfigurationSerialization.registerClass(Warp.class);
+        ConfigurationSerialization.registerClass(SerializableLocation.class);
         this.getCommand("setwarp").setExecutor(new SetWarpCommand(this));
         this.getCommand("warp").setExecutor(new WarpCommand(this));
         this.getCommand("delwarp").setExecutor(new DelWarpCommand(this));
@@ -57,9 +65,8 @@ public class WarpPlugin extends JavaPlugin {
     @Override
     public void onEnable() {
         this.getLogger().info("Warp is activating...");
-        this.warps = new ArrayList<>();
-        this.loadWarps();
         this.registerBukkit();
+        this.loadWarps();
         this.startPeriodicSave();
         this.getLogger().info("Warp has been activated!");
     }
