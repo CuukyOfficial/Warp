@@ -60,7 +60,10 @@ public class WarpSignListener implements Listener {
 
         if (warp != null) {
             event.getBlock().setMetadata("warp", new FixedMetadataValue(this.warpPlugin, name));
-            event.setLine(0, "§7[§eWarp§7]");
+            event.setLine(0, "");
+            event.setLine(1, "§7[§eWarp§7]");
+            event.setLine(2, name);
+            event.setLine(3, "");
             event.getPlayer().sendMessage("§7Sign for §e" + name + " §7has been set!");
         }
     }
