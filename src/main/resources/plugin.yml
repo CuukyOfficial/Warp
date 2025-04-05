@@ -1,6 +1,6 @@
 name: Warp
 author: Cuuky
-version: 2.0
+version: 2.0.0
 main: de.cuuky.warp.WarpPlugin
 description: Warp plugin for warping players
 commands:
