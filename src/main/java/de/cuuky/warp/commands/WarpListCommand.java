@@ -30,12 +30,8 @@ public class WarpListCommand implements CommandExecutor {
             return false;
         }
 
-        sender.sendMessage("§7List of all §6Warps§7:");
-        int i = 0;
-        for (Warp warp : warps) {
-            i++;
-            sender.sendMessage("§7" + i + ". §e" + warp.getName());
-        }
+        String warpNames = "§6" + this.warpPlugin.getWarps().map(Warp::getName).collect(Collectors.joining("§7, §6"));
+        sender.sendMessage("§7List of all §6Warps§7: " + warpNames);
         return true;
     }
 }
