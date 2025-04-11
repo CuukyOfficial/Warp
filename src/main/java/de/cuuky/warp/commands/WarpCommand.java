@@ -1,6 +1,7 @@
 package de.cuuky.warp.commands;
 
 import de.cuuky.warp.Warp;
+import de.cuuky.warp.WarpContext;
 import de.cuuky.warp.WarpPlugin;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -18,24 +19,24 @@ public class WarpCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
         if (!(sender instanceof Player)) {
-            sender.sendMessage("Not for Console!");
+            sender.sendMessage(this.warpPlugin.getMessages().noConsole.value());
             return false;
         }
 
         Player player = (Player) sender;
         if (args.length != 1) {
-            player.sendMessage("§c/warp <NAME>");
+            player.sendMessage(this.warpPlugin.getMessages().warpUsage.value());
             return false;
         }
 
         Warp warp = this.warpPlugin.getWarp(args[0]);
         if (warp == null) {
-            player.sendMessage("§7Warp §e" + args[0] + " §7not found!");
+            player.sendMessage(this.warpPlugin.getMessages().notFound.value(new WarpContext(args[0])));
             return false;
         }
 
         player.teleport(warp.getLocation());
-        player.sendMessage("§7You have been teleportet to the warp §e" + args[0] + "§7!");
+        player.sendMessage(this.warpPlugin.getMessages().warpSuccess.value(new WarpContext(warp)));
         return true;
     }
 }

@@ -1,6 +1,7 @@
 package de.cuuky.warp.listener;
 
 import de.cuuky.warp.Warp;
+import de.cuuky.warp.WarpContext;
 import de.cuuky.warp.WarpPlugin;
 import org.bukkit.block.Block;
 import org.bukkit.block.Sign;
@@ -51,7 +52,7 @@ public class WarpSignListener implements Listener {
         if (!Objects.requireNonNull(event.getLine(0)).equalsIgnoreCase("[warp]")) return;
 
         if (!event.getPlayer().hasPermission("Warp.setwarp")) {
-            event.getPlayer().sendMessage("§7You do not have permission to set a warp sign!");
+            event.getPlayer().sendMessage(this.warpPlugin.getMessages().noPermission.value());
             return;
         }
 
@@ -60,11 +61,12 @@ public class WarpSignListener implements Listener {
 
         if (warp != null) {
             event.getBlock().setMetadata("warp", new FixedMetadataValue(this.warpPlugin, name));
-            event.setLine(0, "");
-            event.setLine(1, "§7[§eWarp§7]");
-            event.setLine(2, name);
-            event.setLine(3, "");
-            event.getPlayer().sendMessage("§7Sign for §e" + name + " §7has been set!");
+            String lines[] = this.warpPlugin.getMessages().sign.value(new WarpContext(warp));
+            event.setLine(0, lines.length > 0 ? lines[0] : "");
+            event.setLine(1, lines.length > 1 ? lines[1] : "");
+            event.setLine(2, lines.length > 2 ? lines[2] : "");
+            event.setLine(3, lines.length > 3 ? lines[3] : "");
+            event.getPlayer().sendMessage(this.warpPlugin.getMessages().created.value(new WarpContext(warp)));
         }
     }
 }

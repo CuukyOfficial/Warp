@@ -1,9 +1,7 @@
-import java.security.MessageDigest
-import java.util.Base64
-
 plugins {
     id("java-library")
     id("maven-publish")
+    id("com.gradleup.shadow") version "8.3.6"
 }
 
 group = "de.cuuky"
@@ -30,43 +28,28 @@ repositories {
     maven("https://repo.extendedclip.com/content/repositories/placeholderapi/")
 }
 
-val internal: Configuration by configurations.creating {
-    configurations.implementation.get().extendsFrom(this)
-    isTransitive = false
-}
-
-val runtimeDownload: Configuration by configurations.creating {
-    configurations.implementation.get().extendsFrom(this)
-}
-
-fun DependencyHandler.modularInternal(dependencyNotation: Any, localFileName: String) : Dependency? {
-    val file = file("${rootDir}/libs/${localFileName}.jar")
-    return if (file.exists())
-        this.add("internal", files(file))
-    else
-        this.add("internal", dependencyNotation)
-}
-
 dependencies {
-    modularInternal("de.varoplugin:cfw:1.0.0-ALPHA-18", "CFW")
-    implementation("org.spigotmc:spigot-api:1.8.8-R0.1-SNAPSHOT")
+    implementation("de.varoplugin:cfw:1.0.0-ALPHA-21") {
+        exclude(group = "org.spigotmc")
+    }
+    shadow("org.spigotmc:spigot-api:1.8.8-R0.1-SNAPSHOT")
 
-	runtimeDownload("io.github.almighty-satan.slams:slams-standalone:1.1.4") {
+    val slamsVersion = "1.2.0"
+    implementation("io.github.almighty-satan.slams:slams-standalone:$slamsVersion") {
         exclude(group = "io.github.almighty-satan.jaskl")
         exclude(module = "annotations")
     }
-    runtimeDownload("io.github.almighty-satan.slams:slams-parser-jaskl:1.1.4") {
-        exclude(group = "io.github.almighty-satan.jaskl")
-        exclude(module = "slams-core")
-        exclude(module = "annotations")
-    }
-    runtimeDownload("io.github.almighty-satan.slams:slams-papi:1.1.4") {
+    implementation("io.github.almighty-satan.slams:slams-parser-jaskl:$slamsVersion") {
         exclude(group = "io.github.almighty-satan.jaskl")
         exclude(module = "slams-core")
         exclude(module = "annotations")
     }
-    runtimeDownload("io.github.almighty-satan.jaskl:jaskl-yaml:1.5.0")
-	runtimeDownload("com.github.cryptomorin:XSeries:11.3.0")
+    implementation("io.github.almighty-satan.slams:slams-papi:$slamsVersion") {
+        exclude(group = "io.github.almighty-satan.jaskl")
+        exclude(module = "slams-core")
+        exclude(module = "annotations")
+    }
+    implementation("io.github.almighty-satan.jaskl:jaskl-yaml:1.6.1")
 }
 
 tasks.jar {
@@ -74,9 +57,6 @@ tasks.jar {
         destinationDirectory.set(file(project.property("destinationDir").toString()))
     if (project.hasProperty("fileName"))
         archiveFileName.set(project.property("fileName").toString())
-
-    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
-    from(internal.map { if (it.isDirectory) it else zipTree(it) })
 }
 
 tasks.processResources {
@@ -88,6 +68,11 @@ tasks.processResources {
     }
 }
 
-val mdSha512: MessageDigest = MessageDigest.getInstance("SHA-512")
-fun File.sha512() : ByteArray = mdSha512.digest(this.readBytes())
-fun ByteArray.base64() : String = Base64.getEncoder().encodeToString(this)
+tasks.shadowJar {
+    isEnableRelocation = true
+    relocationPrefix = "de.cuuky.warp.dependencies"
+}
+
+tasks.build {
+    finalizedBy(tasks.shadowJar)
+}

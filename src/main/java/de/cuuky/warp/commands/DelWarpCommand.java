@@ -1,6 +1,7 @@
 package de.cuuky.warp.commands;
 
 import de.cuuky.warp.Warp;
+import de.cuuky.warp.WarpContext;
 import de.cuuky.warp.WarpPlugin;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -17,22 +18,22 @@ public class DelWarpCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
         if (args.length != 1) {
-            sender.sendMessage("§c/delwarp <WARP>");
+            sender.sendMessage(this.warpPlugin.getMessages().deleteUsage.value());
             return false;
         }
 
         Warp warp = this.warpPlugin.getWarp(args[0]);
         if (warp == null) {
-            sender.sendMessage("§7Warp §e" + args[0] + " §7not found!");
+            sender.sendMessage(this.warpPlugin.getMessages().notFound.value(new WarpContext(args[0])));
             return false;
         }
 
         if (!this.warpPlugin.deleteWarp(warp)) {
-            sender.sendMessage("§7Warp §e" + args[0] + " §7could not be deleted!");
+            sender.sendMessage(this.warpPlugin.getMessages().deleteError.value(new WarpContext(warp)));
             return false;
         }
 
-        sender.sendMessage("§7Warp §e" + args[0] + " §7has been deleted!");
+        sender.sendMessage(this.warpPlugin.getMessages().deleteSuccess.value(new WarpContext(warp)));
         return true;
     }
 }
