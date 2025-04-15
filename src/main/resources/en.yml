@@ -1,0 +1,30 @@
+noPermission: "§7You do not have permission to set a warp sign!"
+noConsole: "Not for Console!"
+notFound: "§7Warp §e<name> §7not found!"
+created: "§7Sign for §e<name> §7has been set!"
+
+set:
+  usage: "§c/setwarp \\<NAME\\>"
+  exists: "§7Warp §e<name> §7already exists!"
+  error: "§7Warp §e<name> §7could not be set!"
+  success: "§7Warp §e<name> §7has been set!"
+
+delete:
+  usage: "§c/delwarp \\<WARP\\>"
+  error: "§7Warp §e<name> §7could not be deleted!"
+  success: "§7Warp §e<name> §7has been deleted!"
+
+list:
+  usage: "§c/warplist"
+  empty: "§7There are no §6Warps§7!"
+  success: "§7List of all §6Warps§7: <warps>"
+
+warp:
+  usage: "§c/warp \\<NAME\\>"
+  success: "§7You have been teleported to the warp §e<name>§7!"
+
+sign:
+  - ""
+  - "§7[§eWarp§7]"
+  - "<name>"
+  - ""

@@ -11,12 +11,17 @@ import org.bukkit.configuration.serialization.ConfigurationSerialization;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitTask;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
 import java.util.stream.Stream;
 
 public class WarpPlugin extends JavaPlugin {
 
+    public static final String PLUGIN_FOLDER = "plugins/Warp";
+
+    private WarpMessages messages;
     private BetterYamlConfiguration configuration;
     private List<Warp> warps;
     private BukkitTask saveTask;
@@ -35,7 +40,7 @@ public class WarpPlugin extends JavaPlugin {
 
     private void loadWarps() {
         this.warps = new ArrayList<>();
-        this.configuration = new BetterYamlConfiguration("plugins/Warp/warps.yml");
+        this.configuration = new BetterYamlConfiguration(PLUGIN_FOLDER + "/warps.yml");
         for (String key : this.configuration.getKeys(true)) {
             Object o = this.configuration.get(key);
             if (o instanceof Warp) {
@@ -65,6 +70,12 @@ public class WarpPlugin extends JavaPlugin {
     @Override
     public void onEnable() {
         this.getLogger().info("Warp is activating...");
+        try {
+            this.messages = new WarpMessages();
+        } catch (IOException e) {
+            this.getLogger().log(Level.SEVERE, "Unable to load Messages", e);
+            return;
+        }
         this.registerBukkit();
         this.loadWarps();
         this.startPeriodicSave();
@@ -77,6 +88,10 @@ public class WarpPlugin extends JavaPlugin {
         this.saveTask.cancel();
         this.saveWarps();
         this.getLogger().info("Warp has been deactivated!");
+    }
+
+    public WarpMessages getMessages() {
+        return this.messages;
     }
 
     public Warp getWarp(String name) {
