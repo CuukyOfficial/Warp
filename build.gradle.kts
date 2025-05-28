@@ -52,13 +52,6 @@ dependencies {
     implementation("io.github.almighty-satan.jaskl:jaskl-yaml:1.6.1")
 }
 
-tasks.jar {
-    if (project.hasProperty("destinationDir"))
-        destinationDirectory.set(file(project.property("destinationDir").toString()))
-    if (project.hasProperty("fileName"))
-        archiveFileName.set(project.property("fileName").toString())
-}
-
 tasks.processResources {
     outputs.upToDateWhen { false }
     duplicatesStrategy = DuplicatesStrategy.INCLUDE
