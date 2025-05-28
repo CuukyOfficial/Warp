@@ -1,0 +1,30 @@
+noPermission: "§7Du hast keine Berechtigung, ein Warp-Schild zu setzen!"
+noConsole: "Nicht für die Konsole!"
+notFound: "§7Warp §e<name> §7nicht gefunden!"
+created: "§7Schild für §e<name> §7wurde gesetzt!"
+
+set:
+  usage: "§c/setwarp \\<NAME\\>"
+  exists: "§7Warp §e<name> §7existiert bereits!"
+  error: "§7Warp §e<name> §7konnte nicht gesetzt werden!"
+  success: "§7Warp §e<name> §7wurde gesetzt!"
+
+delete:
+  usage: "§c/delwarp \\<WARP\\>"
+  error: "§7Warp §e<name> §7konnte nicht gelöscht werden!"
+  success: "§7Warp §e<name> §7wurde gelöscht!"
+
+list:
+  usage: "§c/warplist"
+  empty: "§7Es gibt keine §6Warps§7!"
+  success: "§7Liste aller §6Warps§7: <warps>"
+
+warp:
+  usage: "§c/warp \\<NAME\\>"
+  success: "§7Du wurdest zum Warp §e<name>§7 teleportiert!"
+
+sign:
+  - ""
+  - "§7[§eWarp§7]"
+  - "<name>"
+  - ""
